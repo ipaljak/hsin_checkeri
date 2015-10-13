@@ -60,7 +60,7 @@ inline int message(double pts, char *txt) {
     return 0;
 }
     
-inline void fill_grid() {
+void fill_grid() {
     fscanf(in, "%d", &n);
     for (int i = 0; i < n; ++i) {
         fscanf(in, "%d%d", &r[i], &s[i]);
@@ -96,11 +96,11 @@ int check() {
     if (k1 != k2)
         return message(0, wa);
 
-    int i; char s[200];
-    while (fscanf(user, "%d%s", &i, s) != EOF) {
-        if (dir.find(s[0]) == dir.end() || strlen(s) != 1)
+    int t; char st[200];
+    while (fscanf(user, "%d%s", &t, st) != EOF) {
+        if (dir.find(st[0]) == dir.end() || strlen(st) != 1)
             return message(0.6, half);
-        v.push_back(move(i, dir[s[0]]));
+        v.push_back(move(t - 1, dir[st[0]]));
     }
 
     if ((int) v.size() != k1) 
@@ -109,13 +109,16 @@ int check() {
     for (int i = 0; i < (int) v.size(); ++i) {
 
         int r1 = r[v[i].id], s1 = s[v[i].id];
-        int r2 = r1 + dir[v[i].d], s2 = s1 + dir[v[i].d]; 
-    
+        int r2 = r1 + dr[v[i].d], s2 = s1 + ds[v[i].d]; 
+
         if (!empty(r2, s2))
             return message(0.6, half);
     
         tenk[r1][s1] = false;
         tenk[r2][s2] = true;
+
+        r[v[i].id] = r2;
+        s[v[i].id] = s2;
 
     }
 
@@ -128,6 +131,8 @@ int check() {
 
 int main(int argc, char **argv) {
 
+    init();
+
     if (argc <= 3) {
         fprintf(stderr, "usage: check <input> <sluzbeno> <output>\n");
         return 1;
@@ -137,6 +142,7 @@ int main(int argc, char **argv) {
     out = fopen(argv[2], "r"); assert(out != NULL);
     user = fopen(argv[3], "r"); assert(user != NULL);
 
+    fill_grid();
     return check();
 
 }
