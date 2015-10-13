@@ -34,7 +34,7 @@ FILE *in, *out, *user;
 
 bool tenk[MAXN][MAXN];
 
-char wa[] = "Wrong answer! The number of steps is not minimal.";
+char wa[] = "Wrong answer! The number of moves is not minimal.";
 char half[] = "The number of moves is correct, but the sequence is not!";
 char ok[] = "Correct!";
 
