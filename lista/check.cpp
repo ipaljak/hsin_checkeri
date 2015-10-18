@@ -56,7 +56,7 @@ inline int message(double pts, char *txt) {
 inline bool check_end() {
     char dummy[2];
     if (fscanf(user, "%1s", dummy) == 1) {
-        message(0, pres_error);
+        message(0.6, half);
         return true;
     }
     return false;
