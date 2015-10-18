@@ -20,12 +20,22 @@ FILE *in, *out, *user;
 
 char wa[] = "Wrong answer!";
 char ok[] = "Correct!";
+char pres_error[] = "Output data is not correctly formatted!";
 
 int a[5];
 
 inline void message(double pts, char *txt) {
     printf("%lf\n%s\n", pts, txt);
 } 
+
+inline bool check_end() {
+    char dummy[2];
+    if (fscanf(user, "%1s", dummy) == 1) {
+        message(0, pres_error);
+        return true;
+    }
+    return false;
+}
 
 int main(int argc, char **argv) {
 
@@ -39,7 +49,14 @@ int main(int argc, char **argv) {
     user = fopen(argv[3], "r"); assert(user != NULL);
 
     fscanf(in, "%d%d%d", &a[0], &a[1], &a[2]);
-    fscanf(user, "%d", &a[3]);
+    
+    if (fscanf(user, "%d", &a[3]) != 1) {
+        message(0, pres_error);
+        return 0;
+    }
+
+    if (check_end()) 
+        return 0;
 
     sort(a, a + 4);
 
