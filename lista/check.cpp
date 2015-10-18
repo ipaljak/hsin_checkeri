@@ -23,6 +23,7 @@ FILE *in, *out, *user;
 char wa[] = "Wrong answer! The number of moves is not minimal.";
 char half[] = "The number of moves is correct, but the sequence is not!";
 char ok[] = "Correct!";
+char pres_error[] = "Output data is not correctly formatted!";
 
 int n, q, head;
 int prev[MAXN], next[MAXN];
@@ -52,6 +53,15 @@ inline int message(double pts, char *txt) {
     return 0;
 }
 
+inline bool check_end() {
+    char dummy[2];
+    if (fscanf(user, "%1s", dummy) == 1) {
+        message(0, pres_error);
+        return true;
+    }
+    return false;
+}
+
 bool all_fine() {
     find_head();
     int curr = 0;
@@ -66,7 +76,11 @@ int shuffle_list(FILE *fin, int m) {
     int a, b; 
     
     for (int i = 0; i < m; ++i) {
-        fscanf(fin, "%s%d%d", t, &a, &b); --a; --b;
+        if (fscanf(fin, "%1s%d%d", t, &a, &b) != 3 || (t[0] != 'A' && t[0] != 'B')) {
+            message(0.6, half);
+            exit(0);
+        }
+        --a; --b;
         prev[next[a]] = prev[a];
         next[prev[a]] = next[a];
         if (t[0] == 'A') {
@@ -99,12 +113,18 @@ int main(int argc, char **argv) {
    
     int k1, k2;
     fscanf(out, "%d", &k1);
-    fscanf(user, "%d", &k2);
+    if (fscanf(user, "%d", &k2) != 1){
+        message(0, pres_error);
+        return 0;
+    }
 
     if (k1 != k2)
         return message(0, wa);
 
     shuffle_list(user, k2);
+
+    if (check_end())
+        return 0;
 
     if (all_fine())
         return message(1, ok);
