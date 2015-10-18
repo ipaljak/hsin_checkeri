@@ -37,6 +37,7 @@ bool tenk[MAXN][MAXN];
 char wa[] = "Wrong answer! The number of moves is not minimal.";
 char half[] = "The number of moves is correct, but the sequence is not!";
 char ok[] = "Correct!";
+char pres_error[] = "Output data is not correctly formatted!";
 
 int n;
 int r[MAXN], s[MAXN];
@@ -60,6 +61,11 @@ inline int message(double pts, char *txt) {
     return 0;
 }
     
+inline bool check_end() {
+    char dummy[2];
+    return fscanf(user, "%1s", dummy) == 1;
+}
+
 void fill_grid() {
     fscanf(in, "%d", &n);
     for (int i = 0; i < n; ++i) {
@@ -91,13 +97,16 @@ int check() {
     int k1, k2;
 
     fscanf(out, "%d", &k1);
-    fscanf(user, "%d", &k2);
+    if (fscanf(user, "%d", &k2) != 1) {
+        message(0, pres_error);
+        exit(0);
+    }
 
     if (k1 != k2)
         return message(0, wa);
 
-    int t; char st[200];
-    while (fscanf(user, "%d%s", &t, st) != EOF) {
+    int t; char st[2];
+    while (fscanf(user, "%d%1s", &t, st) == 2) {
         if (dir.find(st[0]) == dir.end() || strlen(st) != 1)
             return message(0.6, half);
         v.push_back(move(t - 1, dir[st[0]]));
@@ -122,7 +131,7 @@ int check() {
 
     }
 
-    if (all_fine())
+    if (all_fine() && !check_end())
         return message(1, ok);
     else 
         return message(0.6, half);
