@@ -22,7 +22,7 @@ char ok[] = "Correct!";
 char wa[] = "Wrong Answer!";
 char pres_error[] = "Output data is not correctly formatted!";
 
-inline void message(double pts, int *txt) {
+inline void message(double pts, char *txt) {
 	printf("%lf\n%s\n", pts, txt);
 	exit(0);
 }
